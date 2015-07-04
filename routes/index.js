@@ -3,7 +3,8 @@
  */
 var express = require('express'),
     controllers = require('../controllers')
-    inviteController = require('../controllers/invite');
+    inviteController = require('../controllers/invite'),
+    roomController = require('../controllers/room');
 
 /**
  * the new Router exposed in express 4
@@ -19,5 +20,7 @@ indexRouter.route('/')
 
 indexRouter.route('/invite').get(inviteController.getInvite);
 indexRouter.route('/invite').post(inviteController.postInvite);
+
+indexRouter.route('/room/:roomRef').get(roomController.getRoom);
 
 exports.indexRouter = indexRouter;

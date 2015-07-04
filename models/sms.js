@@ -13,7 +13,7 @@ exports.sendInvite = function(recipientNum, senderName, roomRef, callback) {
   client.messages.create({ 
     to: recipientNum, 
     from: config.twilio.number, 
-    body: "Lets meet, join the MiddleMeet room to find out where http://www.google.co.uk",
+    body: "Lets meet, join the MiddleMeet room to find out where http://middle-meet.herokuapp.com/room/" + roomRef,
   }, function(err, message) { 
     if(err) { 
       return callback({success:false}); 

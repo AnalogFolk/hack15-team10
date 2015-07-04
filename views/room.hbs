@@ -1,0 +1,203 @@
+{{!< layout}}
+  <div class="row">
+    <div class="col-xs-12">
+      <h1>{{title}}</h1>
+    </div>
+    <div class="col-xs-12" id="map-canvas" style="min-height: 600px">
+    </div>
+  </div>
+  
+  <script type="text/javascript"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCyOL5SywsJYMOvBAl-qVh1w6AeTZL0As">
+  </script>
+  <script type="text/javascript">
+    // function initialize() {
+    //   var mapOptions = {
+    //     // center: { lat: -34.397, lng: 150.644},
+    //     zoom: 8,
+    //     origin: "Oslo+Norway",
+    //     destination: "Telemark+Norway"
+    //   };
+    //   var map = new google.maps.Map(document.getElementById('map-canvas'),
+    //       mapOptions);
+    // }
+    // google.maps.event.addDomListener(window, 'load', initialize);
+
+    var geocoder;
+    var directionsDisplay;
+    var directionsService = new google.maps.DirectionsService();
+    var map;
+    // var pins = [new google.maps.LatLng('51.5235341', '-0.11099809999999999'), new google.maps.LatLng('51.5976741', '-0.1464662'), new google.maps.LatLng('51.492633', '-0.149064')];
+
+    var pins = [new google.maps.LatLng('51.597674','-0.146466'), new google.maps.LatLng('51.540922', '-0.060151'), new google.maps.LatLng('51.527585', '-0.107004')];
+// pages hill
+// 51.597674
+// -0.146466
+
+// london fields
+// 51.540922
+// -0.060151
+
+// rosebery avenue
+// 51.527585
+// -0.107004
+
+    navigator.geolocation.getCurrentPosition(GetLocation);
+    function GetLocation(location) {
+      console.log('latlng: \'' + location.coords.latitude + ', ' + location.coords.longitude + '\'');
+    //   console.log(location.coords.latitude);
+    //   console.log(location.coords.longitude);
+    //   console.log(location.coords.accuracy);
+    }
+
+    function initialize() {
+      geocoder = new google.maps.Geocoder();
+      directionsDisplay = new google.maps.DirectionsRenderer();
+      // var chicago = new google.maps.LatLng(41.850033, -87.6500523);
+      var london = new google.maps.LatLng(51.5235835, -0.1110673);
+      var mapOptions = {
+        zoom:7,
+        center: london
+      };
+      map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+      directionsDisplay.setMap(map);
+      calcRoute();
+      dropPubs();
+      dropOuterPins();
+    }
+
+    function dropOuterPins() {
+      var self = this;
+      
+      _.each(pins, function(element) {
+        console.log('each pin: ' + element);
+        // debugger
+        // var myLatlng = new google.maps.LatLng(element);
+        // console.log(myLatlng);
+        var marker = new google.maps.Marker({
+            position: element,
+            map: map,
+            title: 'Hello World!'
+        }, self);
+      })
+        
+    }
+
+    function dropPubs() {
+      var self = this;
+      // console.log($);
+      // https://api.foursquare.com/v2/venues/search?ll=51.5235341,-0.11099809999999999&query=pub&oauth_token=
+      $.getJSON( 'https://api.foursquare.com/v2/venues/search?', { 
+        client_id: 'NYSBHF5AZMWNSXXFGMYXREZSG1UQVWRWQBUPSOVS3WHHDZ21', 
+        client_secret: 'BQD5QX5HHDLCLWYQZ4PKZDOLEIIMBXYU15FFC535GXHU2BOJ',
+        ll: '51.56596916785226,-0.11500163843150135',
+        limit: '10',
+        intent: 'browse',
+        radius: '2000',
+        query: 'pub',
+        v: '20150505'
+      }, function(data){ 
+        console.log('we got a response');
+        console.log(data);
+        _.each(data.response.venues, function(element, index, list) {
+          console.log('each venue: ' + element.name);
+          var myLatlng = new google.maps.LatLng(element.location.lat, element.location.lng);
+          var marker = new google.maps.Marker({
+              position: myLatlng,
+              map: map,
+              title: 'Hello World!'
+          });
+        }, self);
+      });
+
+      // Consumer Key  ejqz1KeQeIFKUGEr4Tr2Ew
+      // Consumer Secret qI6LI5FKO5r_9QVthqmemGQNbLY
+      // Token grvPt_1HE4R-9WMh1lh7G3OBIKYdc91i
+      // Token Secret  wab_jP4BmpkQE90skgdhtkovjdo
+      // oauth_consumer_key  Your OAuth consumer key (from Manage API Access).
+      // oauth_token The access token obtained (from Manage API Access).
+      // oauth_signature_method  hmac-sha1
+      // oauth_signature The generated request signature, signed with the oauth_token_secret obtained (from Manage API Access).
+      // oauth_timestamp Timestamp for the request in seconds since the Unix epoch.
+      // oauth_nonce A unique string randomly generated per request.
+      // http://api.yelp.com/v2
+      // ?term=german+food&location=Hayes&cll=37.77493,-122.419415
+    }
+
+    function calcRoute() {
+      // var latlng = new google.maps.LatLng(50.5235835, -0.1110673);
+      // geocoder.geocode({'latLng': new google.maps.LatLng(50.5235835, -0.1110673)}, function(results, status) {
+      //   if (status == google.maps.GeocoderStatus.OK) {
+      //     console.log('results');
+      //     console.log(results);
+      //     if (results[1]) {
+      //       console.log(results[1]);
+      //       // map.setZoom(11);
+      //       // marker = new google.maps.Marker({
+      //       //     position: latlng,
+      //       //     map: map
+      //       // });
+      //       // infowindow.setContent(results[1].formatted_address);
+      //       // infowindow.open(map, marker);
+      //     } else {
+      //       alert('No results found');
+      //     }
+      //   } else {
+      //     alert('Geocoder failed due to: ' + status);
+      //   }
+      // });
+
+      // var start = document.getElementById('start').value;
+      // var end = document.getElementById('end').value;
+      
+
+      // var start = "London";
+      // var start = new google.maps.LatLng(50.5235835, -0.1110673);
+      // var start = new google.maps.LatLng('37.7683909618184', '-122.51089453697205');
+      // 51.597683
+      // -0.14647852
+
+      // geocoded n17re
+      // '51.5288876, -0.087989'
+
+      // geocoded n101ed
+      // '51.5976741, -0.1464662'
+
+      // var start = '51.5288876, -0.087989';
+      // var start = '51.5235341, -0.11099809999999999';
+      // // // var end = "Glasgow";
+      // var end = '51.5976741, -0.1464662';
+      var start = pins[0];
+
+      // first end
+      // var end = '51.53794834654028,-0.13550654855038338';
+      // secont end
+      // var end = '51.555398987400835,-0.1045232004118687';
+      var end = '51.56596916785226,-0.11500163843150135';
+
+      // debugger
+
+      // var start = '37.7683909618184, -122.51089453697205';
+      // var end = '41.850033, -87.6500523';
+
+      var request = {
+          origin:start,
+          destination:end,
+          travelMode: google.maps.TravelMode.DRIVING
+      };
+      directionsService.route(request, function(response, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+          console.log('response');
+          console.log(response);
+          // Backup plan for finding the mid point of the route
+          // response.routes[0].legs[0].duration - gives us total duration of trip
+          // response.routes[0].legs[0].steps[n] - gives us all the steps
+          // response.routes[0].legs[0].steps[n].duration - gives us the duration of each step
+
+          directionsDisplay.setDirections(response);
+        }
+      });
+    }
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+  </script>

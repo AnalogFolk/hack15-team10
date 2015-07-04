@@ -50,17 +50,17 @@ gulp.task('uglify', function () {
 });
 
 
-// gulp.task('browserify', function () {
-//   var browserified = transform(function(filename) {
-//     var b = browserify(filename);
-//     return b.bundle();
-//   });
-//   console.log(browserified);
-//   return gulp.src(['./public/src/js/index.js'])
-//     .pipe(browserified)
-//     .pipe(rename('js/bundle.js'))
-//     .pipe(gulp.dest('./public/dist'));
-// });
+gulp.task('browserify', function () {
+  var browserified = transform(function(filename) {
+    var b = browserify(filename);
+    return b.bundle();
+  });
+  console.log(browserified);
+  return gulp.src(['./public/src/js/index.js'])
+    .pipe(browserified)
+    .pipe(rename('js/bundle.js'))
+    .pipe(gulp.dest('./public/dist'));
+});
 
 // Concat the built javascript files from the uglify task with the vendor/lib javascript files into one file
 // Let's save the users some bandwith
