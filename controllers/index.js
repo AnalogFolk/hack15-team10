@@ -5,6 +5,6 @@
 
 exports.index = function (req, res) {
   res.render('index', {
-    title: 'meet-in-the-middle'
+    title: 'Welcome to Middle Meet'
   });
 };

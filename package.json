@@ -9,9 +9,7 @@
     "static-favicon": "~1.0.1",
     "method-override": "~1.0.0",
     "errorhandler": "~1.0.0",
-    "express-hbs": "~0.7.9",
-    // "mongoose": "~3.8.7",
-    // "pg": "4.4.0"
+    "express-hbs": "~0.7.9"
   },
   "devDependencies": {
     "gulp": "~3.6.2",
