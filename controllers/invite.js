@@ -4,8 +4,8 @@
  */
 
 exports.getInvite = function (req, res) {
-  res.render('index', {
-    title: 'getInvite'
+  res.render('invite', {
+    title: 'Invite your friends!'
   });
 };
 
