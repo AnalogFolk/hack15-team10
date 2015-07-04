@@ -7,12 +7,15 @@ var gulp = require('gulp'),
     minifyCss = require('gulp-minify-css'),
     rename = require('gulp-rename'),
     concat =  require('gulp-concat'),
-    livereload = require('gulp-livereload');
+    livereload = require('gulp-livereload'),
+    browserify = require('browserify'),
+    transform = require('vinyl-transform').
+    rename = require('gulp-rename');
 
 // config to hold the path files
 var paths = {
   server: ['controllers/**/*.js', 'models/**/*.js', 'routes/**/*.js', 'app.js', 'config.js'],
-  client: ['./public/js/**/*.js', '!./public/js/**/*.min.js']
+  client: ['./public/src/js/**/*.js', '!./public/src/js/**/*.min.js']
 };
 
 // Made the tasks simpler and modular
@@ -43,24 +46,45 @@ gulp.task('uglify', function () {
     .src(paths.client)
     .pipe(uglify())
     .pipe(rename({suffix: '.min'}))
-    .pipe(gulp.dest('./public/js'))
+    .pipe(gulp.dest('./public/src/js'))
 });
+
+
+// gulp.task('browserify', function () {
+//   var browserified = transform(function(filename) {
+//     var b = browserify(filename);
+//     return b.bundle();
+//   });
+//   console.log(browserified);
+//   return gulp.src(['./public/src/js/index.js'])
+//     .pipe(browserified)
+//     .pipe(rename('js/bundle.js'))
+//     .pipe(gulp.dest('./public/dist'));
+// });
 
 // Concat the built javascript files from the uglify task with the vendor/lib javascript files into one file
 // Let's save the users some bandwith
+
 gulp.task('concatJs', function () {
   gulp
-    .src(['./public/vendor/jquery/dist/jquery.min.js', './public/vendor/bootstrap/dist/js/bootstrap.min.js', './public/js/main.min.js'])
-    .pipe(concat('app.min.js'))
-    .pipe(gulp.dest('./public/js'));
+    .src(['./public/src/js/vendor/*.js'])
+    .pipe(concat('vendor.js'))
+    .pipe(gulp.dest('./public/dist/js'));
 });
+
+// gulp.task('concatJs', function () {
+//   gulp
+//     .src(['./public/vendor/jquery/dist/jquery.min.js', './public/vendor/bootstrap/dist/js/bootstrap.min.js', './public/dist/js/main.min.js'])
+//     .pipe(concat('app.min.js'))
+//     .pipe(gulp.dest('./public/dist/js'));
+// });
 
 // Preprocess the sass files into css files
 gulp.task('sass', function () {
   gulp
-    .src('./public/sass/**/*.scss')
+    .src('./public/src/sass/**/*.scss')
     .pipe(sass())
-    .pipe(gulp.dest('./public/css'));
+    .pipe(gulp.dest('./public/dist/css'));
 });
 
 // Minify the css files to reduce the size of the files
@@ -69,18 +93,18 @@ gulp.task('sass', function () {
 // You can learn more about this from the twitter bootstrap project
 gulp.task('css', function () {
   gulp
-    .src(['./public/css/**/*.css', '!./public/css/**/*.min.css'])
+    .src(['./public/dist/css/**/*.css', '!./public/dist/css/**/*.min.css'])
     .pipe(minifyCss())
     .pipe(rename({suffix: '.min'}))
-    .pipe(gulp.dest('./public/css'));
+    .pipe(gulp.dest('./public/dist/css'));
 });
 
 // Concat all the css files
 gulp.task('concatCss', function () {
   gulp
-    .src(['./public/vendor/bootstrap/dist/css/bootstrap.min.css', './public/css/styles.min.css'])
+    .src(['./public/vendor/bootstrap/dist/css/bootstrap.min.css', './public/dist/css/styles.min.css'])
     .pipe(concat('app.styles.min.css'))
-    .pipe(gulp.dest('./public/css'));
+    .pipe(gulp.dest('./public/dist/css'));
 });
 
 // Watch the various files and runs their respective tasks
@@ -88,14 +112,14 @@ gulp.task('watch', function () {
   gulp.watch(paths.server, ['lintserver']);
   gulp.watch(paths.client, ['lintclient']);
   gulp.watch(paths.client, ['buildJs']);
-  gulp.watch('./public/sass/**/*.scss', ['buildCss']);
+  gulp.watch('./public/src/sass/**/*.scss', ['buildCss']);
   gulp
-    .src(['./views/**/*.hbs', './public/css/**/*.min.css', './public/js/**/*.min.js'])
+    .src(['./views/**/*.hbs', './public/dist/css/**/*.min.css', './public/dist/js/**/*.min.js'])
     .pipe(watch())
     .pipe(livereload());
 });
 
 gulp.task('lint', ['lintserver', 'lintclient']);
 gulp.task('buildCss', ['sass', 'css', 'concatCss']);
-gulp.task('buildJs', ['uglify', 'concatJs']);
+gulp.task('buildJs', ['browserify', 'concatJs']);
 gulp.task('default', ['lint', 'buildCss', 'buildJs', 'watch']);
