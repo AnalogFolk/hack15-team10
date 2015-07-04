@@ -3,9 +3,9 @@
 
 **Team members**
 
-![Des Holmes](https://avatars3.githubusercontent.com/u/1830123?v=3&s=100)  | ![Des Holmes](https://avatars3.githubusercontent.com/u/1517766?v=3&s=100)  | ![Des Holmes](https://avatars3.githubusercontent.com/u/3582841?v=3&s=100) 
+![Jolyon Russ](https://pbs.twimg.com/profile_images/671214558/twitter_icon_400x400.jpg)  | ![Reza Jelveh](https://pbs.twimg.com/profile_images/71731272/Picture_145_400x400.png)  |
 :--- | :--- | :---
-**Jolyon Russ** | **Ben Bishop**
+**Jolyon Russ** | **Reza Jelveh**
 [@jolyonruss](https://twitter.com/jolyon_russ) | [@rjzzleep](https://twitter.com/rjzzleep)
 [jolyonruss](https://github.com/jolyonruss) | [https://github.com/fishman](https://github.com/fishman)
 
