@@ -2,7 +2,8 @@
  * Module dependencies
  */
 var express = require('express'),
-    controllers = require('../controllers');
+    controllers = require('../controllers')
+    inviteController = require('../controllers/invite');
 
 /**
  * the new Router exposed in express 4
@@ -15,5 +16,8 @@ var indexRouter = express.Router();
  */
 indexRouter.route('/')
   .all(controllers.index);
+
+indexRouter.route('/invite').get(inviteController.getInvite);
+indexRouter.route('/invite').post(inviteController.postInvite);
 
 exports.indexRouter = indexRouter;
