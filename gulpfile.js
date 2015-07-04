@@ -102,7 +102,8 @@ gulp.task('css', function () {
 // Concat all the css files
 gulp.task('concatCss', function () {
   gulp
-    .src(['./public/vendor/bootstrap/dist/css/bootstrap.min.css', './public/dist/css/styles.min.css'])
+    // .src(['./public/vendor/bootstrap/dist/css/bootstrap.min.css', './public/dist/css/styles.min.css'])
+    .src(['./public/vendor/geo-bootstrap.css', './public/dist/css/styles.min.css'])
     .pipe(concat('app.styles.min.css'))
     .pipe(gulp.dest('./public/dist/css'));
 });
