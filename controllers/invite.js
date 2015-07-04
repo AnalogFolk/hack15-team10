@@ -39,3 +39,11 @@ exports.postInvite = function (req, res) {
     res.render('invite', returnData);
   });
 };
+
+exports.sendChosenLocation = function(req, res) {
+
+  sms.sendChosenLocation('07765255491', function(result){
+    res.send('done');
+  });
+  
+}

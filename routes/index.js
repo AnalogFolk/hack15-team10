@@ -20,6 +20,7 @@ indexRouter.route('/')
 
 indexRouter.route('/invite').get(inviteController.getInvite);
 indexRouter.route('/invite').post(inviteController.postInvite);
+indexRouter.route('/invite/selected').all(inviteController.sendChosenLocation);
 
 indexRouter.route('/room/:roomRef').get(roomController.getRoom);
 
