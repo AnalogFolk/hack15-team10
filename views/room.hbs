@@ -186,7 +186,8 @@
         console.log('we got a response');
         console.log(data);
         _.each(data.response.venues, function(element, index, list) {
-          console.log('each venue: ' + element.name);
+          console.log(element);
+          // console.log('each venue: ' + element.name);
           var myLatlng = new google.maps.LatLng(element.location.lat, element.location.lng);
           var marker = new google.maps.Marker({
               position: myLatlng,
@@ -194,8 +195,12 @@
               title: 'Hello World!'
           });
 
+          var windowContent = '<p>' + element.name + '</p>';
+          if(element.location.address !== undefined) windowContent += '<p>' + element.location.address + '</p>';
+          windowContent += '<a href="#">Choose this location</a>'
+
           var infowindow = new google.maps.InfoWindow({
-              content: contentString
+              content: windowContent
           });
 
           google.maps.event.addListener(marker, 'click', function() {
