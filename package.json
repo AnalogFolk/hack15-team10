@@ -9,7 +9,8 @@
     "static-favicon": "~1.0.1",
     "method-override": "~1.0.0",
     "errorhandler": "~1.0.0",
-    "express-hbs": "~0.7.9"
+    "express-hbs": "~0.7.9",
+    "twilio":"2.2.1"
   },
   "devDependencies": {
     "gulp": "~3.6.2",
@@ -24,7 +25,6 @@
     "jshint-stylish": "~0.2.0",
     "browserify": "9.0.4",
     "browserify-shim": "^3.8.6",
-    "vinyl-transform": "^1.0.0",
-    "twilio":"2.2.1"
+    "vinyl-transform": "^1.0.0"
   }
 }
