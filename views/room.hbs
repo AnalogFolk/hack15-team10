@@ -11,6 +11,67 @@
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCyOL5SywsJYMOvBAl-qVh1w6AeTZL0As">
   </script>
   <script type="text/javascript">
+    var w1 = 0.5
+    var w2 = 1
+    var w3 = 0.5
+    var weights = [w1,w2,w3]
+
+    var ny = [51.540922,-0.060151]
+    var chi = [51.5976741, -0.1464662]
+    var atl = [51.527585, -0.107004]
+
+    var points = [ny, chi, atl]
+
+    function toDegrees (angle) {
+      return angle * (180 / Math.PI);
+    }
+
+    function toRadians (angle) {
+      angle * (Math.PI / 180);
+      return angle * (Math.PI / 180);
+    }
+
+    function convertCartesian (geoloc) {
+      X = Math.cos(toRadians(geoloc[0])) * Math.cos(toRadians(geoloc[1]))
+      Y = Math.cos(toRadians(geoloc[0])) * Math.sin(toRadians(geoloc[1]))
+      Z = Math.sin(toRadians(geoloc[0]))
+      console.log(X,Y,Z)
+      return [X, Y, Z]
+    }
+
+
+    function calculateCentroid(points, weights) {
+      var coordinates = [];
+
+      for (var point in points) {
+        coordinates.push(convertCartesian(points[point]));
+      }
+
+      var totweight = 0;
+      for (var weight in weights) {
+        totweight += weights[weight];
+      }
+
+      var x = .0;
+      var y = .0;
+      var z = .0;
+
+      for (var coord in coordinates) {
+        x += coordinates[coord][0] * weights[coord];
+        y += coordinates[coord][1] * weights[coord];
+        z += coordinates[coord][2] * weights[coord];
+      }
+
+      x /= totweight;
+      y /= totweight;
+      z /= totweight;
+
+      lon = Math.atan2(y, x);
+      hyp = Math.sqrt(x * x + y * y);
+      lat = Math.atan2(z, hyp);
+      return [toDegrees(lat), toDegrees(lon)]
+    }
+    res = calculateCentroid(points, weights);
     // function initialize() {
     //   var mapOptions = {
     //     // center: { lat: -34.397, lng: 150.644},
